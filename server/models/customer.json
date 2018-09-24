@@ -26,5 +26,24 @@
   "validations": [],
   "relations": {},
   "acls": [],
-  "methods": {}
+  "methods": {
+    "latest": {
+      "accepts": [],
+      "returns": [
+        {
+          "arg": "customer",
+          "type": "object",
+          "root": true,
+          "description": "Latest instance of model added to datasource"
+        }
+      ],
+      "description": "Find latest instance of model from the datasource ",
+      "http": [
+        {
+          "path": "/latest",
+          "verb": "get"
+        }
+      ]
+    }
+  }
 }
