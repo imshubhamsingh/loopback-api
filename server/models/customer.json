@@ -5,6 +5,11 @@
   "options": {
     "validateUpsert": true
   },
+  "mixins": {
+    "ExposeMethods": {
+      "methods": ["find", "findById", "create"]
+    }
+  },
   "properties": {
     "name": {
       "type": "string",
