@@ -12,5 +12,9 @@
       "../common/mixins",
       "./mixins"
     ]
+  },
+  "Customer": {
+    "dataSource": "memory",
+    "public": true
   }
 }
