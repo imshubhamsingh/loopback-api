@@ -1,13 +1,18 @@
 /**
+ * @file File contains Validation Helper Methods.
+ * @author Shubham Singh
+ */
+
+/**
  * Check the age of Customer whether it is more than 16 years old
  * and less than 120 years old.
  * @param  {Function} err - LoopBack error function
  */
 function ageCheck(err) {
-  var today = new Date();
-  var birthDate = new Date(this.dob);
-  var age = today.getFullYear() - birthDate.getFullYear();
-  var m = today.getMonth() - birthDate.getMonth();
+  const today = new Date();
+  const birthDate = new Date(this.dob);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
   if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
     age--;
   }

@@ -1,3 +1,8 @@
+/**
+ * @file File contains Customer Model validation, remote-methods etc.
+ * @author Shubham Singh
+ */
+
 'use strict';
 
 const { validationUtil } = require('../utils');
