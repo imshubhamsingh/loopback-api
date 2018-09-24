@@ -15,7 +15,7 @@ function envConfig() {
     });
   } else if (process.env.NODE_ENV === 'test') {
     require('dotenv').config({
-      path: path.resolve(__dirname, '../env/env.test')
+      path: path.resolve(__dirname, '../env/.env.test')
     });
   } else if (process.env.NODE_ENV === 'development') {
     require('dotenv').config({

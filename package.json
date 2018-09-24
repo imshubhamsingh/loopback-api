@@ -6,9 +6,12 @@
     "node": ">=4"
   },
   "scripts": {
-    "dev": "NODE_ENV=development nodemon server/server.js -watch common --watch server",
     "lint": "eslint .",
+    "dev:server": "NODE_ENV=development nodemon server/server.js -watch common --watch server",
+    "test:server": "NODE_ENV=test nodemon server/server.js -watch common --watch server",
     "start": "node .",
+    "test:watch": "NODE_ENV=test mocha --watch",
+    "test": "npm-run-all -p -r test:server test:watch"
   },
   "dependencies": {
     "compression": "^1.0.3",
@@ -22,8 +25,11 @@
     "strong-error-handler": "^3.0.0"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
     "eslint": "^3.17.1",
-    "eslint-config-loopback": "^8.0.0"
+    "eslint-config-loopback": "^8.0.0",
+    "mocha": "^5.2.0",
+    "supertest": "^3.3.0"
   },
   "repository": {
     "type": "",
