@@ -5,7 +5,7 @@
 
 'use strict';
 
-const { validationUtil } = require('../utils');
+const { mailUtil, validationUtil } = require('../utils');
 
 module.exports = function(Customer) {
   /**
@@ -58,4 +58,23 @@ module.exports = function(Customer) {
       }
     );
   };
+
+  /**
+   * Sending email to Admin with the new Customer detials.
+   */
+  Customer.observe('after save', (ctx, next) => {
+    if (ctx.instance) {
+      const hostname = ctx.Model.app.get('host');
+      const msg = mailUtil.generateMessageToAdmin(
+        ctx.instance.email,
+        hostname,
+        ctx.instance.dob
+      );
+      mailUtil.sendMailToAdmin(msg, (err, response) => {
+        if (!err) {
+          next();
+        }
+      });
+    }
+  });
 };
