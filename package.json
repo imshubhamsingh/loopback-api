@@ -10,16 +10,19 @@
     "dev:server": "NODE_ENV=development nodemon server/server.js -watch common --watch server",
     "test:server": "NODE_ENV=test nodemon server/server.js -watch common --watch server",
     "start": "node .",
-    "test:watch": "NODE_ENV=test mocha --watch",
-    "test": "npm-run-all -p -r test:server test:watch"
+    "test:unit": "NODE_ENV=test ./node_modules/.bin/_mocha --timeout 10000",
+    "test:coverage": "NODE_ENV=test istanbul cover ./node_modules/.bin/_mocha -- ./test/**/*"
   },
   "dependencies": {
     "compression": "^1.0.3",
     "cors": "^2.5.2",
+    "dotenv": "^6.0.0",
+    "faker": "^4.1.0",
     "helmet": "^3.10.0",
     "loopback": "^3.22.0",
     "loopback-boot": "^2.6.5",
     "loopback-component-explorer": "^6.2.0",
+    "mailgun-js": "^0.21.0",
     "nodemon": "^1.18.4",
     "serve-favicon": "^2.0.1",
     "strong-error-handler": "^3.0.0"
@@ -28,7 +31,9 @@
     "chai": "^4.1.2",
     "eslint": "^3.17.1",
     "eslint-config-loopback": "^8.0.0",
+    "istanbul": "^0.4.5",
     "mocha": "^5.2.0",
+    "npm-run-all": "^4.1.3",
     "supertest": "^3.3.0"
   },
   "repository": {

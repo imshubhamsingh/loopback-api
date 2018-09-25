@@ -3,7 +3,6 @@
  * @author Shubham Singh
  */
 describe('API v1 Testing', () => {
-  describe('1. Customer End Points Unit Tests', () => {
-    require('./unit/customer.test.js');
-  });
+  // Unit test for end points related to Customer Model
+  require('./unit/customer.test.js');
 });

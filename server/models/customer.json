@@ -8,7 +8,8 @@
   "mixins": {
     "ExposeMethods": {
       "methods": ["find", "findById", "create"]
-    }
+    },
+    "Timestamp": {}
   },
   "properties": {
     "name": {

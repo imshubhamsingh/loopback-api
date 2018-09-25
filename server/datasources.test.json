@@ -2,7 +2,7 @@
   "db": {
     "name": "db",
     "localStorage": "",
-    "file": "false",
+    "file": "./server/db/data.text.txt",
     "connector": "memory"
   }
 }

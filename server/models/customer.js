@@ -29,19 +29,29 @@ module.exports = function(Customer) {
   //   });
 
   /**
-   * Validate dob to be of formate YYYY-MM-DD
+   * Validating Date of birth of Customer before saving it in datasource
    */
-  Customer.validatesFormatOf('dob', {
-    with: mailUtil.regexp('dob'),
-    message: 'Customer Date of birth should be of format YYYY-MM-DD.'
-  });
+  Customer.observe('before save', (ctx, next) => {
+    if (ctx.instance) {
+      if (ctx.instance.dob) {
+        /**
+         * Validate dob to be of formate YYYY-MM-DD
+         */
+        Customer.validatesFormatOf('dob', {
+          with: validationUtil.regexp('dob'),
+          message: 'Customer Date of birth should be of format YYYY-MM-DD.'
+        });
 
-  /**
-   * Validate age of customer to more than 16 years and less than 120 yers
-   */
-  Customer.validate('dob', validationUtil.ageCheck, {
-    message:
-      'Customer should be at least 16 years old and must be less than 120 years old.'
+        /**
+         * Validate age of customer to more than 16 years and less than 120 yers
+         */
+        Customer.validate('dob', validationUtil.ageCheck, {
+          message:
+            'Customer should be at least 16 years old and must be less than 120 years old.'
+        });
+      }
+    }
+    return next();
   });
 
   /**
@@ -50,7 +60,7 @@ module.exports = function(Customer) {
   Customer.latest = function(callback) {
     Customer.find(
       {
-        order: 'id DESC',
+        order: 'createdAt DESC',
         limit: 1
       },
       (err, user) => {
@@ -64,17 +74,21 @@ module.exports = function(Customer) {
    */
   Customer.observe('after save', (ctx, next) => {
     if (ctx.instance) {
-      const hostname = ctx.Model.app.get('host');
-      const msg = mailUtil.generateMessageToAdmin(
-        ctx.instance.email,
-        hostname,
-        ctx.instance.dob
-      );
-      mailUtil.sendMailToAdmin(msg, (err, response) => {
-        if (!err) {
-          next();
-        }
-      });
+      if (ctx.instance && process.env.NODE_ENV !== 'test') {
+        const hostname = ctx.Model.app.get('host');
+        const msg = mailUtil.generateMessageToAdmin(
+          ctx.instance.email,
+          hostname,
+          ctx.instance.dob
+        );
+        mailUtil.sendMailToAdmin(msg, (err, response) => {
+          if (!err) {
+            next();
+          }
+        });
+      } else {
+        next();
+      }
     }
   });
 };
