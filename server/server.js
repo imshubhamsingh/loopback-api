@@ -14,7 +14,7 @@ app.start = function() {
     if (app.get('loopback-component-explorer')) {
       var explorerPath = app.get('loopback-component-explorer').mountPath;
       process.stdout.write(
-        chalk.magenta(`\n📖  API Documentation on ${baseUrl}/${explorerPath}\n`)
+        chalk.magenta(`\n📖  API Documentation on ${baseUrl}${explorerPath}\n`)
       );
     }
   });
