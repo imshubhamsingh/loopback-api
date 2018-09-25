@@ -18,7 +18,7 @@ function sendMailToAdmin(message, cb) {
   new Promise((resolve, reject) => {
     console.log(adminEmail);
     const data = {
-      from: `Mail Gun Task <postmaster@${emailConfig.domain}>`,
+      from: `Mail Gun Task <${emailConfig.fromMail}>`,
       to: adminEmail,
       subject: message.subject,
       html: message.html
