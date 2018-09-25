@@ -7,6 +7,7 @@
   },
   "scripts": {
     "lint": "eslint .",
+    "gen:DB": "node scripts/gen-db.js",
     "dev:server": "NODE_ENV=development nodemon server/server.js -watch common --watch server",
     "start": "node .",
     "test:server": "NODE_ENV=test nodemon server/server.js -watch common --watch server",
