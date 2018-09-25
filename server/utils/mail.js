@@ -13,11 +13,13 @@ function sendMailToAdmin(message, cb) {
     apiKey: process.env.apiKey,
     domain: process.env.domain
   };
+  const adminEmail = process.env.adminEmail;
   const email = require('mailgun-js')(emailConfig);
   new Promise((resolve, reject) => {
+    console.log(adminEmail);
     const data = {
-      from: `Mail Gun Task <${emailConfig.domain}>`,
-      to: 'test@example.com',
+      from: `Mail Gun Task <postmaster@${emailConfig.domain}>`,
+      to: adminEmail,
       subject: message.subject,
       html: message.html
     };

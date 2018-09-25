@@ -8,8 +8,8 @@
   "scripts": {
     "lint": "eslint .",
     "dev:server": "NODE_ENV=development nodemon server/server.js -watch common --watch server",
-    "test:server": "NODE_ENV=test nodemon server/server.js -watch common --watch server",
     "start": "node .",
+    "test:server": "NODE_ENV=test nodemon server/server.js -watch common --watch server",
     "test:unit": "NODE_ENV=test ./node_modules/.bin/_mocha --timeout 10000",
     "test:coverage": "NODE_ENV=test istanbul cover ./node_modules/.bin/_mocha -- ./test/**/*"
   },

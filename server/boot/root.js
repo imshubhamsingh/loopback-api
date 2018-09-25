@@ -1,7 +1,7 @@
 'use strict';
 
-const { envUtils } = require('../utils');
-envUtils.envConfig();
+const { envUtil } = require('../utils');
+envUtil.envConfig();
 
 module.exports = function(server) {
   // Install a `/` route that returns server status
