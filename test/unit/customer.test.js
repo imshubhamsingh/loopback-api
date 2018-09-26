@@ -9,7 +9,7 @@ const { app, expect, api } = require('../common');
 const Customer = app.models.Customer;
 
 describe('1. Customer Model Unit Tests', () => {
-  before(() => {
+  beforeEach(() => {
     for (let i = 0; i < 10; i++) {
       const customer = {
         name: faker.name.findName().replace(/[\.\']/g, ''),
@@ -18,9 +18,7 @@ describe('1. Customer Model Unit Tests', () => {
       Customer.create(customer);
     }
   });
-  after(() => {
-    Customer.destroyAll();
-  });
+
   describe('1.1 POST /Customers', () => {
     it('1.1.1 should not able to create a customer with invalid name', () => {
       api
@@ -88,6 +86,66 @@ describe('1. Customer Model Unit Tests', () => {
           );
         });
     });
+
+    it('1.1.5 should able to create a customer without giving date of birth', () => {
+      const user = {
+        name: 'Shubham Singh',
+        email: 'imshubhamsingh97@gmail.com'
+      };
+      api
+        .post('/Customers')
+        .send(user)
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end((err, res) => {
+          console.log(res.body);
+          expect(res.body).to.contain(user);
+        });
+    });
+
+    it('1.1.6 should able to create a customer with date of birth', () => {
+      const user = {
+        name: 'Shubham Singh',
+        email: 'imshubhamsingh97@gmail.com',
+        dob: '1997-01-13'
+      };
+      api
+        .post('/Customers')
+        .send(user)
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end((err, res) => {
+          expect(res.body).to.contain(user);
+        });
+    });
+
+    it('1.1.5 should able to create a customer without giving date of birth', () => {
+      const user = {
+        name: 'Shubham Singh',
+        email: 'imshubhamsingh97@gmail.com'
+      };
+      api
+        .post('/Customers')
+        .send(user)
+        .set('Accept', 'application/json')
+        .expect(200);
+    });
+
+    it('1.1.6 should able to create a customer with date of birth', () => {
+      const user = {
+        name: 'Shubham Singh',
+        email: 'imshubhamsingh97@gmail.com',
+        dob: '1997-01-13'
+      };
+      api
+        .post('/Customers')
+        .send(user)
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end((err, res) => {
+          expect(res.body).to.contain(user);
+        });
+    });
   });
 
   describe('1.2 GET /Customers', () => {
@@ -113,9 +171,7 @@ describe('1. Customer Model Unit Tests', () => {
           .get(`/Customers/${id}`)
           .expect('Content-Type', /json/)
           .expect(200)
-          .end((err, res) => {
-            console.log(res.body);
-          });
+          .end();
       });
     });
 
@@ -135,6 +191,38 @@ describe('1. Customer Model Unit Tests', () => {
           });
       });
     });
+
+    it('1.3.3 should be able to get a Customer with an id, which was not present before, from datasource after adding that many customer', () => {
+      Customer.find().then(customers => {
+        const index = customers.length - 1;
+        const id = customers[index].id;
+        const randomid = id + Math.floor(Math.random() * customers.length);
+        api
+          .get(`/Customers/${randomid}`)
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end((err, res) => {
+            const error = res.body.error;
+            expect(error.message).to.contain(
+              `Unknown "Customer" id "${randomid}`
+            );
+          });
+
+        for (let i = id + 1; i <= randomid; i++) {
+          const customer = {
+            name: faker.name.findName().replace(/[\.\']/g, ''),
+            email: faker.internet.email()
+          };
+          Customer.create(customer);
+        }
+
+        api
+          .get(`/Customers/${randomid}`)
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end();
+      });
+    });
   });
 
   describe('1.4 GET /Customers/latest', () => {
@@ -147,10 +235,13 @@ describe('1. Customer Model Unit Tests', () => {
           .expect('Content-Type', /json/)
           .expect(200)
           .end((err, res) => {
-            console.log(res.body);
             expect(res.body).to.contain(customers[index]);
           });
       });
     });
+  });
+
+  afterEach(() => {
+    Customer.destroyAll();
   });
 });

@@ -1,10 +1,12 @@
+/* istanbul ignore next */
+/* istanbul ignore next */
 /**
  * @file File creates new db file.
  * @author Shubham Singh
  */
-
 const chalk = require('chalk');
 const fs = require('fs');
+
 const path = require('path');
 
 const DB_FOLDER_PATH = path.join(__dirname, '..', 'server/db');

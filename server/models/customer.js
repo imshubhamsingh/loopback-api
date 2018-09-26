@@ -74,7 +74,11 @@ module.exports = function(Customer) {
    */
   Customer.observe('after save', (ctx, next) => {
     if (ctx.instance) {
-      if (ctx.instance && process.env.NODE_ENV !== 'test') {
+      if (
+        ctx.instance &&
+        (process.env.NODE_ENV !== 'test' &&
+          process.env.NODE_ENV !== 'development')
+      ) {
         const hostname = ctx.Model.app.get('host');
         const msg = mailUtil.generateMessageToAdmin(
           ctx.instance.email,
