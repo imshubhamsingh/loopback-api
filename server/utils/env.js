@@ -7,6 +7,7 @@ const path = require('path');
 /**
  * Configure environment variable base on env
  */
+/* istanbul ignore next */
 function envConfig() {
   let result;
   if (process.env.NODE_ENV === 'production') {

@@ -5,6 +5,7 @@ var boot = require('loopback-boot');
 var chalk = require('chalk');
 var app = (module.exports = loopback());
 
+/* istanbul ignore next */
 app.start = function() {
   // start the web server
   return app.listen(function() {
@@ -22,6 +23,7 @@ app.start = function() {
 
 // Bootstrap the application, configure models, datasources and middleware.
 // Sub-apps like REST API are mounted via boot scripts.
+/* istanbul ignore next */
 boot(app, __dirname, function(err) {
   if (err) throw err;
 

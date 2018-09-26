@@ -8,6 +8,7 @@
  * @param  {string} message - Message object containing subject, html
  * @param  {Function} cb - Callback function
  */
+/* istanbul ignore next */
 function sendMailToAdmin(message, cb) {
   const emailConfig = {
     apiKey: process.env.apiKey,
@@ -38,6 +39,7 @@ function sendMailToAdmin(message, cb) {
  * @param  {string} hostName - Machine Host name
  * @param  {string} dob - Date of birth of Customer | Optional
  */
+/* istanbul ignore next */
 function generateMessageToAdmin(email, hostName, dob = '') {
   return {
     subject: 'New User Joined the Network',

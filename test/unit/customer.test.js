@@ -4,6 +4,7 @@
  */
 
 const faker = require('faker');
+const sinon = require('sinon');
 const { app, expect, api } = require('../common');
 
 const Customer = app.models.Customer;
@@ -87,7 +88,7 @@ describe('1. Customer Model Unit Tests', () => {
         });
     });
 
-    it('1.1.5 should able to create a customer without giving date of birth', () => {
+    it('1.1.5 should able to create a customer without giving a date of birth', () => {
       const user = {
         name: 'Shubham Singh',
         email: 'imshubhamsingh97@gmail.com'
@@ -103,7 +104,7 @@ describe('1. Customer Model Unit Tests', () => {
         });
     });
 
-    it('1.1.6 should able to create a customer with date of birth', () => {
+    it('1.1.6 should able to create a customer with a date of birth', () => {
       const user = {
         name: 'Shubham Singh',
         email: 'imshubhamsingh97@gmail.com',
@@ -119,32 +120,18 @@ describe('1. Customer Model Unit Tests', () => {
         });
     });
 
-    it('1.1.5 should able to create a customer without giving date of birth', () => {
-      const user = {
-        name: 'Shubham Singh',
-        email: 'imshubhamsingh97@gmail.com'
-      };
-      api
-        .post('/Customers')
-        .send(user)
-        .set('Accept', 'application/json')
-        .expect(200);
-    });
-
-    it('1.1.6 should able to create a customer with date of birth', () => {
-      const user = {
+    it('1.1.7 trigers `before save` hook on Customer model before saving the customer', () => {
+      // Not sure how to test hooks
+      let observer = sinon.stub(Customer, 'observe');
+      observer.yields();
+      let callBack = sinon.spy();
+      const userDetails = {
         name: 'Shubham Singh',
         email: 'imshubhamsingh97@gmail.com',
         dob: '1997-01-13'
       };
-      api
-        .post('/Customers')
-        .send(user)
-        .set('Accept', 'application/json')
-        .expect(200)
-        .end((err, res) => {
-          expect(res.body).to.contain(user);
-        });
+      Customer.observe(userDetails, callBack);
+      observer.restore();
     });
   });
 
@@ -227,15 +214,13 @@ describe('1. Customer Model Unit Tests', () => {
 
   describe('1.4 GET /Customers/latest', () => {
     it('1.4.1 should able to get a latest Customer from datasource', () => {
-      Customer.find().then(customers => {
-        const index = customers.length - 1;
-        const id = customers[index].id;
+      Customer.latest((err, customer) => {
         api
-          .get(`/Customers/${id}`)
+          .get(`/Customers/${customer.id}`)
           .expect('Content-Type', /json/)
           .expect(200)
           .end((err, res) => {
-            expect(res.body).to.contain(customers[index]);
+            expect(res.body).to.contain(customer);
           });
       });
     });
