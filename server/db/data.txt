@@ -1,0 +1,11 @@
+{
+  "ids": {
+    "Customer": 3
+  },
+  "models": {
+    "Customer": {
+      "1": "{\"name\":\"Shubham Singh\",\"email\":\"imshubhamsingh97@gmail.com\",\"dob\":\"1997-01-13\",\"createdAt\":\"2018-09-27T15:14:57.470Z\",\"id\":1}",
+      "2": "{\"name\":\"Shubham Singh\",\"email\":\"imshubhamsingh97@gmail.com\",\"dob\":\"1997-01-13\",\"createdAt\":\"2018-09-27T15:15:32.889Z\",\"id\":2}"
+    }
+  }
+}

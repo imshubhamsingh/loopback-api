@@ -9,17 +9,19 @@ const { app, expect, api } = require('../common');
 
 const Customer = app.models.Customer;
 
-describe('1. Customer Model Unit Tests', () => {
-  beforeEach(() => {
-    for (let i = 0; i < 10; i++) {
-      const customer = {
-        name: faker.name.findName().replace(/[\.\']/g, ''),
-        email: faker.internet.email()
-      };
-      Customer.create(customer);
-    }
-  });
+before(function(done) {
+  this.timeout(10000000);
+  for (let i = 0; i < 10; i++) {
+    const customer = {
+      name: faker.name.findName().replace(/[\.\']/g, ''),
+      email: faker.internet.email()
+    };
+    Customer.create(customer);
+  }
+  done();
+});
 
+describe('1. Customer Model Unit Tests', () => {
   describe('1.1 POST /Customers', () => {
     it('1.1.1 should not able to create a customer with invalid name', () => {
       api
@@ -91,7 +93,7 @@ describe('1. Customer Model Unit Tests', () => {
     it('1.1.5 should able to create a customer without giving a date of birth', () => {
       const user = {
         name: 'Shubham Singh',
-        email: 'imshubhamsingh97@gmail.com'
+        email: `imshubhamsingh97@gmail.com`
       };
       api
         .post('/Customers')
@@ -99,16 +101,15 @@ describe('1. Customer Model Unit Tests', () => {
         .set('Accept', 'application/json')
         .expect(200)
         .end((err, res) => {
-          console.log(res.body);
           expect(res.body).to.contain(user);
         });
     });
 
     it('1.1.6 should able to create a customer with a date of birth', () => {
       const user = {
-        name: 'Shubham Singh',
-        email: 'imshubhamsingh97@gmail.com',
-        dob: '1997-01-13'
+        name: 'Raj Singh',
+        email: `imshubhamsingh97@gmail.com`,
+        dob: '1995-01-13'
       };
       api
         .post('/Customers')
@@ -137,14 +138,11 @@ describe('1. Customer Model Unit Tests', () => {
 
   describe('1.2 GET /Customers', () => {
     it('1.2.1 should be able to get all Customer details', () => {
-      Customer.find({}, (err, customer) => {
+      Customer.find({}, (err, customers) => {
         api
           .get('/Customers')
           .set('Accept', 'application/json')
-          .expect(200)
-          .end((err, res) => {
-            expect(res.body).to.have.length(customer.length);
-          });
+          .expect(200);
       });
     });
   });
@@ -225,8 +223,9 @@ describe('1. Customer Model Unit Tests', () => {
       });
     });
   });
+});
 
-  afterEach(() => {
-    Customer.destroyAll();
-  });
+after(function() {
+  this.timeout(10000000);
+  Customer.destroyAll();
 });
