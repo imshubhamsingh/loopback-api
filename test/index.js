@@ -4,5 +4,12 @@
  */
 describe('API v1 Testing', () => {
   // Unit test for end points related to Customer Model
-  require('./unit/customer.test.js');
+  describe(':: UNIT TESTS ::', () => {
+    require('./unit/customer.test');
+  });
+
+  // Integration test for Customer Model
+  describe(':: INTEGRATION TEST ::', () => {
+    require('./integration/customer.test');
+  });
 });

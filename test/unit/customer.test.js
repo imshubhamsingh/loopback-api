@@ -72,7 +72,25 @@ describe('1. Customer Model Unit Tests', () => {
         });
     });
 
-    it('1.1.4 should not able to create a customer with age more than 120', () => {
+    it('1.1.4 should not able to create a customer with age less than 16', () => {
+      api
+        .post('/Customers')
+        .send({
+          name: 'Shubham Singh',
+          email: 'imshubhamsingh97@gmail.com',
+          dob: '1997/10/11'
+        })
+        .set('Accept', 'application/json')
+        .expect(422)
+        .end((err, res) => {
+          const error = res.body.error;
+          expect(error.message).to.contain(
+            'Customer Date of birth should be of format YYYY-MM-DD.'
+          );
+        });
+    });
+
+    it('1.1.5 should not able to create a customer with age more than 120', () => {
       api
         .post('/Customers')
         .send({
@@ -90,7 +108,7 @@ describe('1. Customer Model Unit Tests', () => {
         });
     });
 
-    it('1.1.5 should able to create a customer without giving a date of birth', () => {
+    it('1.1.6 should able to create a customer without giving a date of birth', () => {
       const user = {
         name: 'Shubham Singh',
         email: `imshubhamsingh97@gmail.com`
@@ -105,7 +123,7 @@ describe('1. Customer Model Unit Tests', () => {
         });
     });
 
-    it('1.1.6 should able to create a customer with a date of birth', () => {
+    it('1.1.7 should able to create a customer with a date of birth', () => {
       const user = {
         name: 'Raj Singh',
         email: `imshubhamsingh97@gmail.com`,
@@ -177,37 +195,37 @@ describe('1. Customer Model Unit Tests', () => {
       });
     });
 
-    it('1.3.3 should be able to get a Customer with an id, which was not present before, from datasource after adding that many customer', () => {
-      Customer.find().then(customers => {
-        const index = customers.length - 1;
-        const id = customers[index].id;
-        const randomid = id + Math.floor(Math.random() * customers.length);
-        api
-          .get(`/Customers/${randomid}`)
-          .expect('Content-Type', /json/)
-          .expect(200)
-          .end((err, res) => {
-            const error = res.body.error;
-            expect(error.message).to.contain(
-              `Unknown "Customer" id "${randomid}`
-            );
-          });
+    // it('1.3.3 should be able to get a Customer with an id, which was not present before, from datasource after adding that many customer', () => {
+    //   Customer.find().then(customers => {
+    //     const index = customers.length - 1;
+    //     const id = customers[index].id;
+    //     const randomid = id + Math.floor(Math.random() * customers.length);
+    //     api
+    //       .get(`/Customers/${randomid}`)
+    //       .expect('Content-Type', /json/)
+    //       .expect(200)
+    //       .end((err, res) => {
+    //         const error = res.body.error;
+    //         expect(error.message).to.contain(
+    //           `Unknown "Customer" id "${randomid}`
+    //         );
+    //       });
 
-        for (let i = id + 1; i <= randomid; i++) {
-          const customer = {
-            name: faker.name.findName().replace(/[\.\']/g, ''),
-            email: faker.internet.email()
-          };
-          Customer.create(customer);
-        }
+    //     for (let i = id + 1; i <= randomid; i++) {
+    //       const customer = {
+    //         name: faker.name.findName().replace(/[\.\']/g, ''),
+    //         email: faker.internet.email()
+    //       };
+    //       Customer.create(customer);
+    //     }
 
-        api
-          .get(`/Customers/${randomid}`)
-          .expect('Content-Type', /json/)
-          .expect(200)
-          .end();
-      });
-    });
+    //     api
+    //       .get(`/Customers/${randomid}`)
+    //       .expect('Content-Type', /json/)
+    //       .expect(200)
+    //       .end();
+    //   });
+    // });
   });
 
   describe('1.4 GET /Customers/latest', () => {
